@@ -1,7 +1,6 @@
 
 $(document).ready(function(){
-	"use strict";
-
+  console.log('asda')
 	var window_width 	 = $(window).width(),
 	window_height 		 = window.innerHeight,
 	header_height 		 = $(".default-header").height(),
@@ -22,7 +21,6 @@ $(document).ready(function(){
         enabled:true
         }
     });
-
     $('.single-gallery').magnificPopup({
         type: 'image',
         gallery:{

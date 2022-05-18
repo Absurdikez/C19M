@@ -1,12 +1,12 @@
-from operator import lt
-from pathlib import Path
-import uvicorn
-
-from fastapi import FastAPI, File, UploadFile, Form
-from fastapi.responses import HTMLResponse
-import shutil
-from fastapi.staticfiles import StaticFiles
 import os
+import shutil
+import uvicorn
+from pathlib import Path
+from operator import lt
+from fastapi import FastAPI, File, UploadFile, Form
+from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.encoders import jsonable_encoder
+from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
@@ -28,6 +28,8 @@ async def upload_file(file: UploadFile = File(...,description="Upload file"), au
 
 # author_name: str = Form(...), keywords: str = Form(...)
 
+
+
 @app.get("/")
 async def main():
 	content = """
@@ -42,5 +44,13 @@ async def main():
 """
 	return HTMLResponse(content=content)
 
+@app.get("/getFileNames")
+def get_file_names():
+	file_names =  os.listdir(os.getcwd()+'/files')
+	json_compatible_item_data = jsonable_encoder(file_names)
+	return JSONResponse(content=json_compatible_item_data)
+
+
+print(get_file_names())
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
